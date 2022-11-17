@@ -10,23 +10,34 @@ on:
     branches: [ "main" ]
 
 jobs:
+
   build:
 
-    #runs-on: ubuntu-latest
-    runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [13.x]
-        
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+# jobs:
+#   build:
+
+#     runs-on: ubuntu-latest
+#     #runs-on: self-hosted
+
+#     strategy:
+#       matrix:
+#         node-version: [13.x]
+        
+
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#         cache: 'npm'
+#     - run: npm ci
+#     - run: npm run build --if-present
+#     - run: npm test
